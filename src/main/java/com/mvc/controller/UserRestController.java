@@ -98,7 +98,7 @@ public class UserRestController {
 	}
 	
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
-	@GetMapping("/info/{userinfo_id}")
+	@GetMapping("/user/info/{userinfo_id}")
 	public ResponseEntity<Map<String, Object>> getInfo(
 			@PathVariable("userinfo_id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userinfo_id,
 			HttpServletRequest request) {
@@ -126,10 +126,22 @@ public class UserRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@GetMapping(value="/user/logout")
+	@GetMapping(value="/user/logout/{userinfo_id}")
 	@ApiOperation(value = "로그아웃", notes = "로그아웃이 되었는지 확인합니다.")
-	public void logout(HttpSession session) {
-		session.invalidate();
+	public ResponseEntity<?> removeToken(@PathVariable("userinfo_id") String userinfo_id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			service.deleteRefreshToken(userinfo_id);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("로그아웃 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
 	}
 	
 }
