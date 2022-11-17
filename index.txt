@@ -1,0 +1,21 @@
+
+1. 기본(필수) 기능
+
+1) 지역 동별 실거래가 검색 구현
+2) 아파트 이름 별 실거래가 검색 구현
+(HouseRestController, HouseMapper, HouseService, HouseServiceImpl, House, House.xml)
+
+3) 회원정보 등록, 수정 삭제, 검색 구현
+4) 로그인/로그아웃 기능 구현
+(UserRestController, UserMapper, UserService, UserServiceImpl, User, User.xml)
+
+2. 추가기능
+1) 관심지역 등록, 삭제 기능 구현
+(InterestRestController, InterestMapper, InterestService, InterestServiceImpl, Interest, Interest.xml)
+
+3. 심화기능
+1) 공지사항 등록
+2) 공지사항 수정
+3) 공지사항 삭제
+4) 공지사항 검색
+(NoticeRestController, NoticeMapper, NoticeService, NoticeServiceImpl, Notice, Notice.xml)

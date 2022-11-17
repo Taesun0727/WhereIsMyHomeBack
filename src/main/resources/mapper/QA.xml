@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 이 파일과 매핑되어 실행될 자바 매퍼 파일 정보 -->
+<mapper namespace="com.mvc.mapper.QAMapper">
+   
+   	<select id="QASearchAll" resultType="QA">
+		select *
+		from qa
+		where qa_question_num = 0
+		order by qa_register_date DESC
+	</select>
+	
+	<!-- <select id="noticeSearchByTitle" parameterType="string" resultType="QA">
+		select *
+		from notice
+		where notice_title like concat('%',#{notice_title},'%')
+		order by notice_register_date DESC
+	</select> -->
+	
+	<select id="QARead" parameterType="int" resultType="QA">
+		select *
+		from qa
+		where qa_num = #{qa_num}
+	</select>
+	
+	<select id="QaAnswerRead" parameterType="int" resultType="QA">
+		select *
+		from qa
+		where qa_question_num = #{qa_question_num}
+	</select>
+	
+	<insert id="QAInsert" parameterType="QA">
+		<choose>
+			<when test="qa_question_num != 0">
+				insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date, qa_question_num)
+		 		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate(), #{qa_question_num})
+			</when>
+			<otherwise>
+				insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date)
+		 		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate())
+			</otherwise>
+		</choose>
+		
+	</insert>
+	
+	<update id="QAUpdate" parameterType="QA">
+		update qa 
+		set qa_title = #{qa_title}, qa_content=#{qa_content}, qa_update_date=sysdate()
+		where qa_num = #{qa_num} 
+	</update>
+	
+	<update id="QAStateChange" parameterType="QA">
+		 update qa set qa_status = (case qa_status when 1 then 0 when 0 then 1 end) 
+		 where qa_num = #{qa_num}
+	</update>
+	
+	 <delete id="QADelete" parameterType="int">
+		delete from qa where qa_num = #{qa_num}
+	</delete>
+
+</mapper>

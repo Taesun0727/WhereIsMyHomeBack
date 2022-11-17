@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 이 파일과 매핑되어 실행될 자바 매퍼 파일 정보 -->
+<mapper namespace="com.mvc.mapper.NoticeMapper">
+   
+   	<select id="noticeSearchAll" resultType="Notice">
+		select *
+		from notice
+		order by notice_register_date DESC
+	</select>
+	
+	<select id="noticeSearchByTitle" parameterType="string" resultType="Notice">
+		select *
+		from notice
+		where notice_title like concat('%',#{notice_title},'%')
+		order by notice_register_date DESC
+	</select>
+	
+	<select id="noticeRead" parameterType="string" resultType="Notice">
+		select *
+		from notice
+		where notice_num = #{notice_num}
+		order by notice_register_date DESC
+	</select>
+	
+	<insert id="noticeInsert" parameterType="Notice">
+		insert into notice(userinfo_nick, notice_title, notice_content, notice_hit)
+		 values(#{userinfo_nick}, #{notice_title}, #{notice_content}, 0)
+	</insert>
+	
+	<update id="noticeUpdate" parameterType="Notice">
+		update notice 
+		set notice_title = #{notice_title}, notice_content=#{notice_content}, notice_update_date=sysdate()
+		where notice_num = #{notice_num} 
+	</update>
+	
+	 <delete id="noticeDelete" parameterType="string">
+		delete from notice where notice_num = #{notice_num}
+	</delete>
+
+</mapper>

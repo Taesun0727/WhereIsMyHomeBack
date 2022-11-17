@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 이 파일과 매핑되어 실행될 자바 매퍼 파일 정보 -->
+<mapper namespace="com.mvc.mapper.HouseMapper">
+	
+    <select id="siSearch" resultType="string">
+		select DISTINCT sidoName
+		from baseaddress
+	</select>
+
+	<select id="gugunSearch" parameterType="string" resultType="string">
+		select DISTINCT gugunName 
+		from baseaddress 
+		where sidoName = #{si}
+	</select>
+	
+	<select id="dongSearch" parameterType="string" resultType="string">
+		select DISTINCT dongName 
+		from baseaddress 
+		where gugunName = #{gu}
+	</select>
+	
+	<select id="dongSelect" parameterType="string" resultType="House">
+		select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
+		from houseinfo i, housedeal d 
+		where i.aptCode = d.aptcode and i.dongName = #{dong}
+	</select>
+	
+	<select id="houseSearch" parameterType="string" resultType="House">
+		select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
+		from houseinfo i, housedeal d 
+		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%')
+	</select>
+
+</mapper>

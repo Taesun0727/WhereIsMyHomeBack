@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 이 파일과 매핑되어 실행될 자바 매퍼 파일 정보 -->
+<mapper namespace="com.mvc.mapper.InterestMapper">
+	<!-- select * 
+	from todo 
+	where content like concat('%',#{content},'%') -->
+	
+	<!-- <select id="UserSearch" parameterType="string" resultType="User">
+		select *
+		from userinfo
+		where userinfo_id = #{userinfo_id}
+	</select>
+	
+	<select id="UserLogin" parameterType="string" resultType="String">
+		select userinfo_id, userinfo_password
+		from userinfo
+		where userinfo_id = #{userinfo_id} and userinfo_password = #{userinfo_password}
+	</select> -->
+	
+	<insert id="InterestInsert" parameterType="Interest">
+		insert into interest(userinfo_id, dongCode) 
+		values(#{userinfo_id}, #{dongCode})
+	</insert>
+	
+	 <delete id="InterestDelete" parameterType="Interest">
+		delete from interest where interest_num = #{interest_num}
+	</delete>  
+	
+	<!-- <update id="UserModify" parameterType="User">
+		update userinfo set userinfo_id = #{userinfo_id}, userinfo_password=#{userinfo_password}, userinfo_nick=#{userinfo_nick} 
+		where userinfo_num = #{userinfo_num} 
+	</update>-->
+	
+	
+	
+	<!--  <select id="search" resultType="Board" parameterType="java.util.Map">
+		select * from board
+		<where>
+			<choose>
+				<when test="condition != null and condition == 'name'">
+					name = #{word}
+				</when>
+				
+				<when test="condition != null and condition == 'title'">
+					title like concat('%', #{word}, '%')
+				</when>
+				
+			</choose>
+		</where>
+	</select>
+	-->
+
+</mapper>
