@@ -3,6 +3,7 @@ package com.mvc.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -92,6 +93,35 @@ public class UserRestController {
 			logger.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
+	@GetMapping("/info/{userinfo_id}")
+	public ResponseEntity<Map<String, Object>> getInfo(
+			@PathVariable("userinfo_id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userinfo_id,
+			HttpServletRequest request) {
+//		logger.debug("userid : {} ", userid);
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		if (jwtService.checkToken(request.getHeader("access-token"))) {
+			logger.info("사용 가능한 토큰!!!");
+			try {
+//				로그인 사용자 정보.
+				User user = service.UserInfo(userinfo_id);
+				resultMap.put("userInfo", user);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.error("정보조회 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			logger.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

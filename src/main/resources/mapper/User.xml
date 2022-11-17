@@ -21,6 +21,12 @@
 		where userinfo_id = #{userinfo_id} and userinfo_password = #{userinfo_password}
 	</select>
 	
+	<select id="UserInfo" parameterType="string" resultType="User">
+		select userinfo_nick, userinfo_id
+		from userinfo
+		where userinfo_id = #{userinfo_id}
+	</select>
+	
 	<insert id="UserJoin" parameterType="User">
 		insert into userinfo(userinfo_id, userinfo_password, userinfo_nick) 
 		values(#{userinfo_id}, #{userinfo_password}, #{userinfo_nick})

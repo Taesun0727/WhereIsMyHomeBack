@@ -69,4 +69,9 @@ public class UserServiceImpl implements UserService {
 		map.put("token", null);
 		mapper.deleteRefreshToken(map);
 	}
+
+	@Override
+	public User UserInfo(String userinfo_id) throws Exception {
+		return mapper.UserInfo(userinfo_id);
+	}
 }
