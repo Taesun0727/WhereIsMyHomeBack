@@ -22,7 +22,7 @@
 	</select>
 	
 	<select id="UserInfo" parameterType="string" resultType="User">
-		select userinfo_nick, userinfo_id
+		select userinfo_nick, userinfo_id, userinfo_level
 		from userinfo
 		where userinfo_id = #{userinfo_id}
 	</select>
