@@ -8,6 +8,9 @@ public interface UserService {
 	void UserModify(User userinfo);
 	void UserDelete(int userinfo_num);
 	User UserSearch(String userinfo_id);
-	User UserLogin(User userinfo);
+	public User UserLogin(User userinfo);
 	void UserLogout();
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
+	public Object getRefreshToken(String userid) throws Exception;
+	public void deleteRefreshToken(String userid) throws Exception;
 }

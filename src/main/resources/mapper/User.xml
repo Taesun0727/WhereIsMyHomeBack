@@ -35,6 +35,24 @@
 		delete from userinfo where userinfo_num = #{userinfo_num}
 	</delete>
 	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select userinfo_token
+		from userinfo
+		where userinfo_id = #{userinfo_id}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update userinfo
+		set userinfo_token = #{token}
+		where userinfo_id = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update userinfo
+		set userinfo_token = #{userinfo_token, jdbcType=VARCHAR}
+		where userinfo_id = #{userinfo_id}
+	</update>
+	
 	<!--  <select id="search" resultType="Board" parameterType="java.util.Map">
 		select * from board
 		<where>

@@ -1,10 +1,15 @@
 package com.mvc.controller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,22 +17,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mvc.service.JwtServiceImpl;
 import com.mvc.service.UserService;
 import com.mvc.vo.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @CrossOrigin("*")
 @Api(value="UserRestController-Version 1")
 public class UserRestController {
 	
+	public static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+
 	@Autowired
-	UserService service;	//interface type
+	private JwtServiceImpl jwtService;
+
+	@Autowired
+	private UserService service;	//interface type
 	
 	@PostMapping(value="/user/join")
 	@ApiOperation(value = "회원가입", notes = "회원을 등록합니다.")
@@ -55,21 +68,32 @@ public class UserRestController {
 	
 	@PostMapping(value="/user/login")
 	@ApiOperation(value = "로그인", notes = "로그인이 되었는지 확인합니다.")
-	public String login(HttpSession session, @RequestBody User userinfo) {
-		User user = service.UserLogin(userinfo);
-		if(user == null) {
-			return "로그인 실패";
+	public ResponseEntity<Map<String, Object>> login(@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User userinfo) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			User user = service.UserLogin(userinfo);
+			if (user != null) {
+				String accessToken = jwtService.createAccessToken("userinfo", user.getUserinfo_id());// key, data
+				String refreshToken = jwtService.createRefreshToken("userinfo", user.getUserinfo_id());// key, data
+				service.saveRefreshToken(userinfo.getUserinfo_id(), refreshToken);
+				logger.debug("로그인 accessToken 정보 : {}", accessToken);
+				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+				
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		else {
-			String ID = user.getUserinfo_id();
-			String PW = user.getUserinfo_password();
-			HashMap<String, String> map = new HashMap<>();
-		
-			map.put("id", ID);
-			map.put("pw", PW);
-			session.setAttribute("USER", map);
-			return "로그인 성공";
-		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	@GetMapping(value="/user/logout")

@@ -17,4 +17,5 @@ public class User {
     private String userinfo_password;
     private String userinfo_nick;
     private int userinfo_level;
+    private String userinfo_token;
 }
