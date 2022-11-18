@@ -22,7 +22,7 @@
 	</select>
 	
 	<select id="UserInfo" parameterType="string" resultType="User">
-		select userinfo_nick, userinfo_id, userinfo_level
+		select userinfo_num, userinfo_nick, userinfo_id, userinfo_level
 		from userinfo
 		where userinfo_id = #{userinfo_id}
 	</select>
@@ -33,7 +33,7 @@
 	</insert>
 	
 	<update id="UserModify" parameterType="User">
-		update userinfo set userinfo_id = #{userinfo_id}, userinfo_password=#{userinfo_password}, userinfo_nick=#{userinfo_nick} 
+		update userinfo set userinfo_password=#{userinfo_password}, userinfo_nick=#{userinfo_nick} 
 		where userinfo_num = #{userinfo_num} 
 	</update>
 	

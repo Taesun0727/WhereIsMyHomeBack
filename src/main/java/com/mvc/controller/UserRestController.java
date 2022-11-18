@@ -57,8 +57,9 @@ public class UserRestController {
 	
 	@DeleteMapping(value="/user/delete/{userinfo_num}")
 	@ApiOperation(value = "회원삭제", notes = "회원을 삭제합니다.")
-	public void delete(@PathVariable int userinfo_num) {
+	public String delete(@PathVariable int userinfo_num) {
 		service.UserDelete(userinfo_num);
+		return "success";
 	}
 	
 	@PostMapping(value="/user/search/{userinfo_id}")
