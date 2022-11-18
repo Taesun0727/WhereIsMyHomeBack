@@ -54,7 +54,7 @@ public class NoticeRestController {
 	}
 	
 	@ApiOperation(value = "공지사항 읽기", notes = "공지사항 <big>num으로 찾은 값</big>을 반환해 줍니다.")
-	@GetMapping(value="/notice/num/{num}")
+	@GetMapping(value="/notice/{num}")
 	public Notice noticeRead(@PathVariable String num) {
 		return service.noticeRead(num);
 	}
