@@ -62,11 +62,13 @@ public class NoticeRestController {
 	@ApiOperation(value = "공지사항 추가", notes = "공지사항 추가합니다.")
 	@PostMapping(value="/notice")
 	public String noticeInsert(@RequestBody Notice n) {
-		if(service.noticeInsert(n)) {
-			return "추가성공";
-		} else {
-			return "추가실패";
-		}
+		service.noticeInsert(n);
+		return "success";
+//		if(service.noticeInsert(n)) {
+//			return "success";
+//		} else {
+//			return "fail";
+//		}
 	}
 	
 	@ApiOperation(value = "공지사항 수정", notes = "공지사항 수정합니다.")

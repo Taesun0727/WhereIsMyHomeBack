@@ -27,8 +27,8 @@
 	</select>
 	
 	<insert id="noticeInsert" parameterType="Notice">
-		insert into notice(userinfo_nick, notice_title, notice_content, notice_hit)
-		 values(#{userinfo_nick}, #{notice_title}, #{notice_content}, 0)
+		insert into notice(userinfo_num, notice_title, notice_content, notice_hit)
+		 values(#{userinfo_num}, #{notice_title}, #{notice_content}, 0)
 	</insert>
 	
 	<update id="noticeUpdate" parameterType="Notice">

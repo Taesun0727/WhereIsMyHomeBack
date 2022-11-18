@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class Notice {
 	private String notice_num;
-	private String userinfo_nick;
+	private String userinfo_num;
 	private String notice_title;
 	private String notice_content;
 	private String notice_register_date;
