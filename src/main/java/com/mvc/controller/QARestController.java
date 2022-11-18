@@ -30,9 +30,21 @@ public class QARestController {
 	QAService service;
 	
 	@ApiOperation(value = "Q&A 전체 검색", notes = "Q&A <big>전체 목록</big>을 반환해 줍니다.")
-	@GetMapping(value="/qa")
+	@GetMapping(value="/qna")
 	public ResponseEntity<?> QASearchAll() {
 		List<QA> notice_list = service.QASearchAll();
+		if (notice_list != null && !notice_list.isEmpty()) {
+			ResponseEntity<List<QA>> response = new ResponseEntity<List<QA>>(notice_list, HttpStatus.OK);
+			return response;
+		} else {
+			return extracted();
+		}
+	}
+	
+	@ApiOperation(value = "Q&A 자신 검색", notes = "Q&A <big>자신 목록</big>을 반환해 줍니다.")
+	@GetMapping(value="/qna/user/{num}")
+	public ResponseEntity<?> QASearch(@PathVariable int num) {
+		List<QA> notice_list = service.QASearch(num);
 		if (notice_list != null && !notice_list.isEmpty()) {
 			ResponseEntity<List<QA>> response = new ResponseEntity<List<QA>>(notice_list, HttpStatus.OK);
 			return response;
@@ -54,13 +66,13 @@ public class QARestController {
 //	}
 	
 	@ApiOperation(value = "Q&A 읽기", notes = "Q&A <big>num으로 찾은 값</big>을 반환해 줍니다.")
-	@GetMapping(value="/qa/{num}")
+	@GetMapping(value="/qna/{num}")
 	public QA QARead(@PathVariable int num) {
 		return service.QARead(num);
 	}
 	
 	@ApiOperation(value = "Q&A 추가", notes = "Q&A 추가합니다.")
-	@PostMapping(value="/qa")
+	@PostMapping(value="/qna")
 	public String QAInsert(@RequestBody QA q) {
 		if(service.QAInsert(q)) {
 			return "추가성공";
@@ -69,8 +81,20 @@ public class QARestController {
 		}
 	}
 	
+	@ApiOperation(value = "answer 추가", notes = "answer 추가합니다.")
+	@PostMapping(value="/answer")
+	public String AnswerInsert(@RequestBody QA q) {
+		int num = q.getQa_question_num();
+		service.QAStateChange(num);
+		if(service.AnswerInsert(q)) {
+			return "추가성공";
+		} else {
+			return "추가실패";
+		}
+	}
+	
 	@ApiOperation(value = "Q&A 수정", notes = "Q&A 수정합니다.")
-	@PutMapping(value="/qa")
+	@PutMapping(value="/qna")
 	public String QAUpdate(@RequestBody QA q) {
 		if(service.QAUpdate(q)) {
 			return "수정성공";
@@ -80,7 +104,7 @@ public class QARestController {
 	}
 	
 	@ApiOperation(value = "Q&A 삭제", notes = "Q&A 삭제합니다.")
-	@DeleteMapping(value="/qa/{num}")
+	@DeleteMapping(value="/qna/{num}")
 	public String QADelete(@PathVariable int num) {
 		if(service.QADelete(num)) {
 			return "삭제성공";
@@ -90,13 +114,13 @@ public class QARestController {
 	}
 	
 	@ApiOperation(value = "Q&A 답변읽기", notes = "Q&A답변 <big>num으로 찾은 값</big>을 반환해 줍니다.")
-	@GetMapping(value="/qa/answer/{num}")
+	@GetMapping(value="/qna/answer/{num}")
 	public QA QaAnswerRead(@PathVariable int num) {
 		return service.QaAnswerRead(num);
 	}
 	
 	@ApiOperation(value = "Q&A 답변여부", notes = "Q&A 답변여부 판별합니다.")
-	@PutMapping(value="/qa/complete/{num}")
+	@PutMapping(value="/qna/complete/{num}")
 	public String QAStateChange(@PathVariable int num) {
 		if(service.QAStateChange(num)) {
 			return "답변완료";

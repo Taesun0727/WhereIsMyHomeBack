@@ -19,6 +19,12 @@ public class QAServiceImpl implements QAService{
 	public ArrayList<QA> QASearchAll() {
 		return mapper.QASearchAll();
 	}
+	
+	@Override
+	public ArrayList<QA> QASearch(int num) {
+		// TODO Auto-generated method stub
+		return mapper.QASearch(num);
+	}
 
 //	@Override
 //	public ArrayList<QA> noticeSearchByTitle(String title) {
@@ -53,6 +59,11 @@ public class QAServiceImpl implements QAService{
 	@Override
 	public boolean QAStateChange(int num) {
 		return mapper.QAStateChange(num);
+	}
+
+	@Override
+	public boolean AnswerInsert(QA q) {
+		return mapper.AnswerInsert(q);
 	}
 
 

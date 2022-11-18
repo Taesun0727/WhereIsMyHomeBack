@@ -9,6 +9,7 @@ import com.mvc.vo.QA;
 @Mapper
 public interface QAMapper {
 	ArrayList<QA> QASearchAll();
+	ArrayList<QA> QASearch(int num);
 //	ArrayList<QA> noticeSearchByTitle(String title);
 	QA QARead(int num);
 	boolean QAInsert(QA q);
@@ -16,4 +17,5 @@ public interface QAMapper {
 	boolean QADelete(int num);
 	QA QaAnswerRead(int num);
 	boolean QAStateChange(int num);
+	boolean AnswerInsert(QA q);
 }

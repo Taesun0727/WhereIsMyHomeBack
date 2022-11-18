@@ -13,6 +13,13 @@
 		order by qa_register_date DESC
 	</select>
 	
+	<select id="QASearch" resultType="QA">
+		select *
+		from qa
+		where userinfo_num = #{userinfo_num}
+		order by qa_register_date DESC
+	</select>
+	
 	<!-- <select id="noticeSearchByTitle" parameterType="string" resultType="QA">
 		select *
 		from notice
@@ -33,17 +40,13 @@
 	</select>
 	
 	<insert id="QAInsert" parameterType="QA">
-		<choose>
-			<when test="qa_question_num != 0">
-				insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date, qa_question_num)
-		 		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate(), #{qa_question_num})
-			</when>
-			<otherwise>
-				insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date)
-		 		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate())
-			</otherwise>
-		</choose>
-		
+		insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date)
+		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate())
+	</insert>
+	
+	<insert id="AnswerInsert" parameterType="QA">
+		insert into qa(userinfo_num, qa_title, qa_content, qa_register_date, qa_update_date, qa_question_num)
+		values(#{userinfo_num}, #{qa_title}, #{qa_content}, sysdate(), sysdate(), #{qa_question_num})
 	</insert>
 	
 	<update id="QAUpdate" parameterType="QA">
