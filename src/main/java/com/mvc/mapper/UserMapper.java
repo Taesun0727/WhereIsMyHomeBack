@@ -19,4 +19,5 @@ public interface UserMapper {
 	public void saveRefreshToken(Map<String, String> map) throws Exception;
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleteRefreshToken(Map<String, String> map) throws Exception;
+	void UserPwModify(User userinfo);
 }

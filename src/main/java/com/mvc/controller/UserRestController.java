@@ -51,8 +51,16 @@ public class UserRestController {
 	
 	@PutMapping(value="/user/update")
 	@ApiOperation(value = "회원수정", notes = "회원을 수정합니다.")
-	public void modify(@RequestBody User userinfo) {
+	public String modify(@RequestBody User userinfo) {
 		service.UserModify(userinfo);
+		return "success";
+	}
+	
+	@PutMapping(value="/user/pwupdate")
+	@ApiOperation(value = "비밀번호수정", notes = "비밀번호 수정합니다.")
+	public String PwModify(@RequestBody User userinfo) {
+		service.UserPwModify(userinfo);
+		return "success";
 	}
 	
 	@DeleteMapping(value="/user/delete/{userinfo_num}")

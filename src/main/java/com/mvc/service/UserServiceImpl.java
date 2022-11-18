@@ -74,4 +74,9 @@ public class UserServiceImpl implements UserService {
 	public User UserInfo(String userinfo_id) throws Exception {
 		return mapper.UserInfo(userinfo_id);
 	}
+
+	@Override
+	public void UserPwModify(User userinfo) {
+		mapper.UserPwModify(userinfo);
+	}
 }
