@@ -44,5 +44,10 @@ public class HouseServiceImpl implements HouseService {
 		return mapper.getHouse(aptCode);
 	}
 
+	@Override
+	public ArrayList<House> getDeal(String aptCode) {
+		return mapper.getDeal(aptCode);
+	}
+
 
 }

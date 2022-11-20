@@ -15,4 +15,5 @@ public interface HouseMapper {
 	ArrayList<House> houseSearch(String apart);
 	House dongInfoSearch(String dong);
 	House getHouse(String aptCode);
+	ArrayList<House> getDeal(String aptCode);
 }

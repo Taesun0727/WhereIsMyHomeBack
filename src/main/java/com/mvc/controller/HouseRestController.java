@@ -53,6 +53,7 @@ public class HouseRestController {
 	public ResponseEntity<?> dongSearch(@PathVariable String dong) {
 		List<String> dong_list = service.dongSearch(dong);
 		if (dong_list != null && !dong_list.isEmpty()) {
+			System.out.println(dong_list);
 			ResponseEntity<List<String>> response = new ResponseEntity<List<String>>(dong_list, HttpStatus.OK);
 			return response;
 		} else {
@@ -90,6 +91,18 @@ public class HouseRestController {
 		House house = service.getHouse(aptCode);
 		if (house != null) {
 			ResponseEntity<House> response = new ResponseEntity<House>(house, HttpStatus.OK);
+			return response;
+		} else {
+			return extracted();
+		}
+	}
+	
+	@ApiOperation(value = "아파트 거래 검색", notes = "아파트 <big>거래 전체 목록</big>을 반환해 줍니다.")
+	@GetMapping(value="/house/deal/{aptCode}")
+	public ResponseEntity<?> getDeal(@PathVariable String aptCode) {
+		List<House> deal_list = service.getDeal(aptCode);
+		if (deal_list != null && !deal_list.isEmpty()) {
+			ResponseEntity<List<House>> response = new ResponseEntity<List<House>>(deal_list, HttpStatus.OK);
 			return response;
 		} else {
 			return extracted();

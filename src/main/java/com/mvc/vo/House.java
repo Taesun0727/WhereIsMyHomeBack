@@ -44,3 +44,4 @@ public class House {
 	private String recentPrice;
 	
 }
+

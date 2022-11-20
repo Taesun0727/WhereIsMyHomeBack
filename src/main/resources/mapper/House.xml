@@ -69,5 +69,12 @@
 		from houseinfo i, housedeal d 
 		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%') -->
 	</select>
+	
+	<select id="getDeal" parameterType="string" resultType="Deal">
+	select *
+	from housedeal
+	where aptCode = #{aptCode}
+	order by dealYear desc, dealMonth desc, dealDay desc
+	</select>
 
 </mapper>
