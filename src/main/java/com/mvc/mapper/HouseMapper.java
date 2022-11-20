@@ -13,4 +13,5 @@ public interface HouseMapper {
 	ArrayList<String> dongSearch(String gugun);
 	ArrayList<House> dongSelect(String dong);
 	ArrayList<House> houseSearch(String apart);
+	House dongInfoSearch(String dong);
 }

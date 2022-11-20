@@ -39,4 +39,5 @@ public class HouseServiceImpl implements HouseService {
 		return mapper.houseSearch(apart);
 	}
 
+
 }

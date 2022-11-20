@@ -6,33 +6,52 @@
 <!-- 이 파일과 매핑되어 실행될 자바 매퍼 파일 정보 -->
 <mapper namespace="com.mvc.mapper.HouseMapper">
 	
-    <select id="siSearch" resultType="string">
-		select DISTINCT sidoName
-		from baseaddress
+    <select id="siSearch" resultType="sidoGugunCode">
+		select left(sidoCode,2) sidoCode, sidoName
+		from sidocode
+		order by sidoCode
 	</select>
 
-	<select id="gugunSearch" parameterType="string" resultType="string">
-		select DISTINCT gugunName 
-		from baseaddress 
-		where sidoName = #{si}
+	<select id="gugunSearch" parameterType="string" resultType="sidoGugunCode">
+		select left(gugunCode,5) gugunCode, gugunName
+		from guguncode
+		where left(gugunCode,2) = #{sido}
+		order by gugunCode
 	</select>
 	
-	<select id="dongSearch" parameterType="string" resultType="string">
-		select DISTINCT dongName 
-		from baseaddress 
-		where gugunName = #{gu}
+	<select id="dongSearch" parameterType="string" resultType="House">
+		select distinct dongName, dongCode
+		from houseinfo
+		where left(dongCode, 5) = #{gugun}
+		order by dongName
 	</select>
 	
 	<select id="dongSelect" parameterType="string" resultType="House">
-		select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
-		from houseinfo i, housedeal d 
-		where i.aptCode = d.aptcode and i.dongName = #{dong}
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where dongCode = #{dong} 
+		order by aptName
 	</select>
 	
 	<select id="houseSearch" parameterType="string" resultType="House">
-		select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
+	select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where h.aptName like concat('%',#{aptName},'%')
+		order by aptName
+		
+		<!-- select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
 		from houseinfo i, housedeal d 
-		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%')
+		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%') -->
 	</select>
 
 </mapper>
