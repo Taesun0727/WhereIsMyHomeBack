@@ -10,4 +10,5 @@ public interface HouseService {
 	ArrayList<String> dongSearch(String gugun);
 	ArrayList<House> dongSelect(String dong);
 	ArrayList<House> houseSearch(String apart);
+	House getHouse(String aptCode);
 }

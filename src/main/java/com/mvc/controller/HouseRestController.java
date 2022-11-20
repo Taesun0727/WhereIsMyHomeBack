@@ -84,6 +84,18 @@ public class HouseRestController {
 		}
 	}
 	
+	@ApiOperation(value = "아파트 검색", notes = "아파트 <big>전체 목록</big>을 반환해 줍니다.")
+	@GetMapping(value="/house/code/{aptCode}")
+	public ResponseEntity<?> getHouse(@PathVariable String aptCode) {
+		House house = service.getHouse(aptCode);
+		if (house != null) {
+			ResponseEntity<House> response = new ResponseEntity<House>(house, HttpStatus.OK);
+			return response;
+		} else {
+			return extracted();
+		}
+	}
+	
 	private ResponseEntity extracted() {
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}

@@ -24,6 +24,8 @@ public class House {
 	private String dongCode;
 	@ApiModelProperty(value = "동이름")
 	private String dongName;
+	@ApiModelProperty(value = "주소이름")
+	private String roadName;
 	@ApiModelProperty(value = "시도이름")
 	private String sidoName;
 	@ApiModelProperty(value = "구군이름")

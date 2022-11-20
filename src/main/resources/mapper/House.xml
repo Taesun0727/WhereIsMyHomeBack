@@ -53,5 +53,21 @@
 		from houseinfo i, housedeal d 
 		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%') -->
 	</select>
+	
+	<select id="getHouse" parameterType="string" resultType="House">
+	select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.roadName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where h.aptCode = #{aptCode}
+		order by aptName
+		
+		<!-- select i.aptCode, i.aptName, i.dongName, i.buildYear, i.lat, i.lng, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, d.floor
+		from houseinfo i, housedeal d 
+		where i.aptCode = d.aptcode and i.aptName like concat('%',#{aptName},'%') -->
+	</select>
 
 </mapper>
