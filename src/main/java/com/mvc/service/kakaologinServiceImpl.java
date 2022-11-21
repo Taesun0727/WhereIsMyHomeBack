@@ -90,11 +90,19 @@ public class kakaologinServiceImpl implements kakaologinService {
 
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
             
-            String id = element.getAsJsonObject().get("id").getAsString();
+            //String id = element.getAsJsonObject().get("id").getAsString();
             String email = null;
+            
+            //추가
+            JsonObject profile = kakao_account.getAsJsonObject().get("profile").getAsJsonObject();
+            String nickname = profile.get("nickname").getAsString();
+            
             if (kakao_account.getAsJsonObject().get("email") != null) {
                 email = kakao_account.getAsJsonObject().get("email").getAsString();
-                userInfo.put("id", id);
+                
+                //추가
+                userInfo.put("nickname", nickname);
+                userInfo.put("access_Token", access_Token);
                 userInfo.put("email", email);
             }
 

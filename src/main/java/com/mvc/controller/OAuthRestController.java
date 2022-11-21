@@ -25,6 +25,9 @@ public class OAuthRestController {
 	public HashMap<String, String> klogin(@RequestParam(value= "code") String authorize_code){
 		String access_token = service.getAccessToken(authorize_code);
 		HashMap<String, String> userinfo = service.getUserInfo(access_token);
+		if(userinfo != null) {
+			
+		}
         return userinfo;
 	}
 	
