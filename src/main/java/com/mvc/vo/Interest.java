@@ -13,6 +13,6 @@ import lombok.ToString;
 @ToString
 public class Interest {
 	private int interest_num;
-	private String userinfo_id;
-	private String dongCode;
+	private String userinfo_num;
+	private String aptCode;
 }

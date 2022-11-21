@@ -20,14 +20,24 @@
 		from userinfo
 		where userinfo_id = #{userinfo_id} and userinfo_password = #{userinfo_password}
 	</select> -->
+	<select id="InterestSearchAll" parameterType="string" resultType="House">
+		SELECT *
+		FROM ssafyweb.houseinfo
+		where aptCode IN (select aptCode from ssafyweb.interest where userinfo_num = #{userinfo_num});
+	</select>
+	<select id="getInterest" parameterType="Interest" resultType="interest">
+		select *
+		from interest
+		where userinfo_num = #{userinfo_num} and aptCode = #{aptCode}
+	</select>
 	
 	<insert id="InterestInsert" parameterType="Interest">
-		insert into interest(userinfo_id, dongCode) 
-		values(#{userinfo_id}, #{dongCode})
+		insert into interest(userinfo_num, aptCode) 
+		values(#{userinfo_num}, #{aptCode})
 	</insert>
 	
 	 <delete id="InterestDelete" parameterType="Interest">
-		delete from interest where interest_num = #{interest_num}
+		delete from interest where userinfo_num = #{userinfo_num} and aptCode = #{aptCode}
 	</delete>  
 	
 	<!-- <update id="UserModify" parameterType="User">

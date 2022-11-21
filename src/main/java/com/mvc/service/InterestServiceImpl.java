@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mvc.mapper.InterestMapper;
+import com.mvc.vo.House;
 import com.mvc.vo.Interest;
 
 @Service
@@ -20,13 +21,20 @@ public class InterestServiceImpl implements InterestService {
 	}
 
 	@Override
-	public void InterestDelete(int interest_num) {
-		mapper.InterestDelete(interest_num);
+	public void InterestDelete(Interest interest) {
+		mapper.InterestDelete(interest);
 	}
 
 	@Override
-	public List<Interest> InterestSearch(String userinfo_id) {
-		return null;
+	public Interest getInterest(Interest interest) {
+		// TODO Auto-generated method stub
+		return mapper.getInterest(interest);
+	}
+
+	@Override
+	public List<House> interestSearchAll(String userinfo_num) {
+		// TODO Auto-generated method stub
+		return mapper.InterestSearchAll(userinfo_num);
 	}
 
 }
