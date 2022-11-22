@@ -32,6 +32,11 @@
 		values(#{userinfo_id}, #{userinfo_password}, #{userinfo_nick})
 	</insert>
 	
+	<insert id="KakaoUserInfo" parameterType="User">
+		insert into userinfo(userinfo_id, userinfo_password, userinfo_nick, userinfo_token) 
+		values(#{userinfo_id}, "asdf", #{userinfo_nick}, #{userinfo_token})
+	</insert> 
+	
 	<update id="UserModify" parameterType="User">
 		update userinfo set userinfo_nick=#{userinfo_nick} 
 		where userinfo_num = #{userinfo_num} 

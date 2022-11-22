@@ -1,6 +1,7 @@
 package com.mvc.mapper;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,5 @@ public interface UserMapper {
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleteRefreshToken(Map<String, String> map) throws Exception;
 	void UserPwModify(User userinfo);
+	void KakaoUserInfo(User userInfo);
 }

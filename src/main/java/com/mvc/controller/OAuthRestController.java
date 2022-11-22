@@ -1,9 +1,8 @@
 package com.mvc.controller;
 
-import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,15 +19,30 @@ public class OAuthRestController {
 	@Autowired
 	kakaologinServiceImpl service;
 	
+//	@GetMapping("/kakaologin")
+//	@ApiOperation(value= "회원인증", notes="회원인증입니다.")
+//	public HashMap<String, String> klogin(@RequestParam(value= "code") String authorize_code){
+//		String access_token = service.getAccessToken(authorize_code);
+//		HashMap<String, String> userinfo = service.getUserInfo(access_token);
+//		if(userinfo != null) {
+//			
+//		}
+//        return userinfo;
+//	}
+	
 	@GetMapping("/kakaologin")
 	@ApiOperation(value= "회원인증", notes="회원인증입니다.")
-	public HashMap<String, String> klogin(@RequestParam(value= "code") String authorize_code){
+	public String klogin(@RequestParam(value= "code") String authorize_code){
 		String access_token = service.getAccessToken(authorize_code);
-		HashMap<String, String> userinfo = service.getUserInfo(access_token);
-		if(userinfo != null) {
-			
+		
+		try {
+			service.getUserInfo(access_token);
+		}catch (Exception e) {
+			System.out.println("중복된 아이디입니다.");
 		}
-        return userinfo;
+		
+
+		return "success";
 	}
 	
 }

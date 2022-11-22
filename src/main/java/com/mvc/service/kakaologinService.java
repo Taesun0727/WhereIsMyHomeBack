@@ -1,8 +1,8 @@
 package com.mvc.service;
 
-import java.util.HashMap;
+import java.util.List;
 
 public interface kakaologinService {
 	String getAccessToken(String auth_code);
-	HashMap<String, String> getUserInfo(String access_Token);
+	void getUserInfo(String access_Token);
 }

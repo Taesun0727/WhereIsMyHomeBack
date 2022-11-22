@@ -7,16 +7,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mvc.mapper.UserMapper;
+import com.mvc.vo.User;
 
 @Service
 public class kakaologinServiceImpl implements kakaologinService {
+	
+	@Autowired
+	private UserMapper mapper;
 	
     @Override
     public String getAccessToken(String auth_code) {
@@ -64,9 +70,9 @@ public class kakaologinServiceImpl implements kakaologinService {
     }
     
     @Override
-    public HashMap<String, String> getUserInfo(String access_Token) {
+    public void getUserInfo(String access_Token) {
 
-        HashMap<String, String> userInfo = new HashMap<>();
+        User userInfo = new User();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         try {
@@ -101,15 +107,21 @@ public class kakaologinServiceImpl implements kakaologinService {
                 email = kakao_account.getAsJsonObject().get("email").getAsString();
                 
                 //추가
-                userInfo.put("nickname", nickname);
-                userInfo.put("access_Token", access_Token);
-                userInfo.put("email", email);
+//                userInfo.put("nickname", nickname);
+//                userInfo.put("access_Token", access_Token);
+//                userInfo.put("email", email);
+                userInfo.setUserinfo_id(email);
+                userInfo.setUserinfo_nick(nickname);
+                userInfo.setUserinfo_token(access_Token);
             }
+            
+//            System.out.println(userInfo.get(2));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
 
-        return userInfo;
+       mapper.KakaoUserInfo(userInfo);
     }
 }
