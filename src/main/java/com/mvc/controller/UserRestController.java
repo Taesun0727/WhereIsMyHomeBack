@@ -78,14 +78,14 @@ public class UserRestController {
 	
 	@PostMapping(value="/user/login")
 	@ApiOperation(value = "로그인", notes = "로그인이 되었는지 확인합니다.")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User userinfo) {
-		Map<String, Object> resultMap = new HashMap<>();
+	public ResponseEntity<?> login(@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User userinfo) throws Exception {
+		Map<String, String> resultMap = service.UserLogin(userinfo);
 		HttpStatus status = null;
 		try {
-			User user = service.UserLogin(userinfo);
-			if (user != null) {
-				String accessToken = jwtService.createAccessToken("userinfo", user.getUserinfo_id());// key, data
-				String refreshToken = jwtService.createRefreshToken("userinfo", user.getUserinfo_id());// key, data
+//			User user = service.UserLogin(userinfo);
+			if (resultMap != null) {
+				String accessToken = jwtService.createAccessToken("userinfo", userinfo.getUserinfo_id());// key, data
+				String refreshToken = jwtService.createRefreshToken("userinfo", userinfo.getUserinfo_id());// key, data
 				service.saveRefreshToken(userinfo.getUserinfo_id(), refreshToken);
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
@@ -103,7 +103,7 @@ public class UserRestController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<Object>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
