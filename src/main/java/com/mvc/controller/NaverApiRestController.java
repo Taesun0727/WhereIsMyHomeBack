@@ -42,6 +42,8 @@ public class NaverApiRestController {
 				.header("X-Naver-Client-Secret", "Tz66dqeDBa")
 				.build();
 		
+		
+		
 		ResponseEntity<String> result = restTemplate.exchange(req, String.class);
 	
 		return result.getBody();
